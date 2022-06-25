@@ -1,0 +1,10 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests/src
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    excludePaths:
+        - tests/src/Compiler/Test*.php
+

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PHP_CodeSniffer" xsi:noNamespaceSchemaLocation="phpcs.xsd">
+    <file>src</file>
+    <file>tests/src</file>
+    <rule ref="Drupal" />
+    <rule ref="Drupal.Commenting.FunctionComment.IncorrectParamVarName">
+        <exclude-pattern>src/Container.php</exclude-pattern>
+    </rule>
+    <exclude-pattern>tests/src/Compiler/Test*.php</exclude-pattern>
+</ruleset>

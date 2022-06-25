@@ -1,0 +1,39 @@
+{
+  "name": "xylemical/discovery",
+  "type": "library",
+  "license": "MIT",
+  "description": "Provides discovery of classes by hierarchy.",
+  "keywords": [
+    "discovery"
+  ],
+  "homepage": "https://github.com/xylemical/discovery",
+  "autoload": {
+    "psr-4": {
+      "Xylemical\\Discovery\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Xylemical\\Discovery\\": "tests/src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.0",
+    "nikic/php-parser": "^4.14"
+  },
+  "require-dev": {
+    "xylemical/composer-dev-bundle": "^0.1.1",
+    "mikey179/vfsstream": "^1.6"
+  },
+  "scripts": {
+    "tests": "vendor/bin/phpunit && vendor/bin/phpstan analyse && vendor/bin/phpcs",
+    "test-coverage": "php -dxdebug.mode=coverage vendor/bin/phpunit --coverage-html report"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  }
+}
