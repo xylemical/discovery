@@ -86,7 +86,7 @@ class NamespaceDiscovery implements DiscoveryInterface {
    */
   protected function getSource(int $length, string $path): ?SourceInterface {
     $class = str_replace('/', '\\', substr($path, $length, -4));
-    $expected = trim($this->namespace . $class, '\\');
+    $expected = trim($this->namespace . '\\' . $class, '\\');
 
     $sources = Source::parse($this->factory, file_get_contents($path));
     foreach ($sources as $source) {

@@ -35,12 +35,20 @@ class NamespaceDiscoveryTest extends TestCase {
    */
   public function testSanity(): void {
     $factory = new SourceFactory();
-    $discovery = new NamespaceDiscovery($factory, '', $this->root->url());
+    $discovery = new NamespaceDiscovery($factory, '', $this->root->url() . '/lib');
     $results = $discovery->discover();
     $this->assertEquals([
-      'A\A\A' => new Source(SourceInterface::TYPE_CLASS, 'A\A\A'),
-      'A\B\A' => new Source(SourceInterface::TYPE_INTERFACE, 'A\B\A'),
+      'A\\A\\A' => new Source(SourceInterface::TYPE_CLASS, 'A\\A\\A'),
+      'A\\B\\A' => new Source(SourceInterface::TYPE_INTERFACE, 'A\\B\\A'),
     ], $results);
+
+    $discovery = new NamespaceDiscovery($factory, '\\Prefix\\For\\', $this->root->url() . '/src');
+    $results = $discovery->discover();
+    $this->assertEquals([
+      'Prefix\\For\\A\\A\\A' => new Source(SourceInterface::TYPE_CLASS, 'Prefix\\For\\A\\A\\A'),
+      'Prefix\\For\\A\\B\\A' => new Source(SourceInterface::TYPE_INTERFACE, 'Prefix\\For\\A\\B\\A'),
+    ], $results);
+
   }
 
   /**
@@ -51,13 +59,26 @@ class NamespaceDiscoveryTest extends TestCase {
    */
   protected function getStructure(): array {
     return [
-      'A' => [
+      'src' => [
         'A' => [
-          'A.php' => $this->getClass('class', 'A\A', 'A'),
-          'B.php' => $this->getClass('class', 'A\A', 'C'),
+          'A' => [
+            'A.php' => $this->getClass('class', 'Prefix\\For\\A\\A', 'A'),
+            'B.php' => $this->getClass('class', 'Prefix\\For\\A\\A', 'C'),
+          ],
+          'B' => [
+            'A.php' => $this->getClass('interface', 'Prefix\\For\\A\\B', 'A'),
+          ],
         ],
-        'B' => [
-          'A.php' => $this->getClass('interface', 'A\B', 'A'),
+      ],
+      'lib' => [
+        'A' => [
+          'A' => [
+            'A.php' => $this->getClass('class', 'A\\A', 'A'),
+            'B.php' => $this->getClass('class', 'A\\A', 'C'),
+          ],
+          'B' => [
+            'A.php' => $this->getClass('interface', 'A\\B', 'A'),
+          ],
         ],
       ],
     ];

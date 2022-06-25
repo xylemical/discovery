@@ -1,24 +1,24 @@
-# Container framework
+# Discovery framework
 
-Provides a framework for containers and compilation.
+Provides a framework for class discovery.
 
 ## Install
 
 The recommended way to install this library is [through composer](http://getcomposer.org).
 
 ```sh
-composer require xylemical/container
+composer require xylemical/discovery
 ```
 
 ## Usage
 
 ```php
 
-use Xylemical\Container\ContainerBuilder;
+use Xylemical\Discovery\SourceFactory;
+use Xylemical\Discovery\Directory\NamespaceDiscovery;
 
-$source = ...; // A source defined by \Xylemical\Container\Source\SourceInterface.
-$builder = new ContainerBuilder($source, 'config/container.php');
-$container = $builder->getContainer();
+$discovery = new NamespaceDiscovery(new SourceFactory(), 'Name\\Space\\Location', 'path/to/classes');
+$sources = $discovery->discover();
 
 ```
 
