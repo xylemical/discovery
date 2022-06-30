@@ -10,9 +10,9 @@ use Xylemical\Discovery\SourceInterface;
 use function array_keys;
 
 /**
- * Tests \Xylemical\Discovery\Source\SourceDependencies.
+ * Tests \Xylemical\Discovery\Source\SourceDependents.
  */
-class SourceDependenciesTest extends TestCase {
+class SourceDependentsTest extends TestCase {
 
   /**
    * Tests sanity.
@@ -44,7 +44,7 @@ class SourceDependenciesTest extends TestCase {
       'TE' => (new Source(SourceInterface::TYPE_TRAIT, 'TE')),
     ];
 
-    $dependencies = new SourceDependencies();
+    $dependencies = new SourceDependents();
     $result = $dependencies->generate($sources);
     $this->assertEquals([
       'CB',

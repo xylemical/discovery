@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Xylemical\Discovery\Source;
 
 /**
- * Generates the source dependency tree.
+ * Generates the source dependents.
  */
-class SourceDependencies {
+class SourceDependents {
 
   /**
-   * Generate the source dependency tree.
+   * Generate the source dependents.
    *
    * @param \Xylemical\Discovery\SourceInterface[] $sources
    *   The sources.
    *
    * @return \Xylemical\Discovery\SourceInterface[][]
-   *   The tree, indexed by dependent values.
+   *   The dependents, indexed by source.
    */
   public function generate(array $sources): array {
     $tree = [];
