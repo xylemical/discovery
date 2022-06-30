@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Xylemical\Discovery\Source;
 
 use PhpParser\Node;
-use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\Trait_;
-use PhpParser\Node\Stmt\Interface_;
-use PhpParser\Node\Stmt\TraitUse;
 use PhpParser\Node\Name;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Interface_;
+use PhpParser\Node\Stmt\Trait_;
+use PhpParser\Node\Stmt\TraitUse;
 use PhpParser\NodeVisitorAbstract;
+use Xylemical\Discovery\ClassSourceInterface;
 use Xylemical\Discovery\SourceFactoryInterface;
 use Xylemical\Discovery\SourceInterface;
 use function array_unique;
@@ -127,9 +128,12 @@ class SourceVisitor extends NodeVisitorAbstract {
   protected function doClass(Class_ $node): void {
     $this->target = $node;
     $this->source = $this->factory->create(
-      SourceInterface::TYPE_CLASS,
+      'class',
       $this->getName($node->namespacedName),
     );
+    if ($this->source instanceof ClassSourceInterface) {
+      $this->source->setAbstract($node->isAbstract());
+    }
     if ($node->extends) {
       $this->source->setClasses([
         $this->getName($node->extends),
@@ -151,7 +155,7 @@ class SourceVisitor extends NodeVisitorAbstract {
   protected function doInterface(Interface_ $node): void {
     $this->target = $node;
     $this->source = $this->factory->create(
-      SourceInterface::TYPE_INTERFACE,
+      'interface',
       $this->getName($node->namespacedName),
     );
     $implements = [];
@@ -170,7 +174,7 @@ class SourceVisitor extends NodeVisitorAbstract {
   protected function doTrait(Trait_ $node): void {
     $this->target = $node;
     $this->source = $this->factory->create(
-      SourceInterface::TYPE_TRAIT,
+      'trait',
       $this->getName($node->namespacedName),
     );
   }

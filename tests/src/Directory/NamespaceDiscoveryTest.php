@@ -7,9 +7,9 @@ namespace Xylemical\Discovery\Directory;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
-use Xylemical\Discovery\Source;
+use Xylemical\Discovery\ClassSource;
+use Xylemical\Discovery\InterfaceSource;
 use Xylemical\Discovery\SourceFactory;
-use Xylemical\Discovery\SourceInterface;
 
 /**
  * Tests \Xylemical\Discovery\Directory\NamespaceDiscovery.
@@ -38,17 +38,20 @@ class NamespaceDiscoveryTest extends TestCase {
     $discovery = new NamespaceDiscovery($factory, '', $this->root->url() . '/lib');
     $results = $discovery->discover();
     $this->assertEquals([
-      'A\\A\\A' => new Source(SourceInterface::TYPE_CLASS, 'A\\A\\A'),
-      'A\\B\\A' => new Source(SourceInterface::TYPE_INTERFACE, 'A\\B\\A'),
+      'A\\A\\A' => (new ClassSource('A\\A\\A'))->setAbstract(TRUE),
+      'A\\B\\A' => new InterfaceSource('A\\B\\A'),
     ], $results);
+    // @phpstan-ignore-next-line
+    $this->assertTrue($results['A\\A\\A']->isAbstract());
 
     $discovery = new NamespaceDiscovery($factory, '\\Prefix\\For\\', $this->root->url() . '/src');
     $results = $discovery->discover();
     $this->assertEquals([
-      'Prefix\\For\\A\\A\\A' => new Source(SourceInterface::TYPE_CLASS, 'Prefix\\For\\A\\A\\A'),
-      'Prefix\\For\\A\\B\\A' => new Source(SourceInterface::TYPE_INTERFACE, 'Prefix\\For\\A\\B\\A'),
+      'Prefix\\For\\A\\A\\A' => (new ClassSource('Prefix\\For\\A\\A\\A'))->setAbstract(TRUE),
+      'Prefix\\For\\A\\B\\A' => new InterfaceSource('Prefix\\For\\A\\B\\A'),
     ], $results);
-
+    // @phpstan-ignore-next-line
+    $this->assertTrue($results['Prefix\\For\\A\\A\\A']->isAbstract());
   }
 
   /**
@@ -62,7 +65,7 @@ class NamespaceDiscoveryTest extends TestCase {
       'src' => [
         'A' => [
           'A' => [
-            'A.php' => $this->getClass('class', 'Prefix\\For\\A\\A', 'A'),
+            'A.php' => $this->getClass('abstract class', 'Prefix\\For\\A\\A', 'A'),
             'B.php' => $this->getClass('class', 'Prefix\\For\\A\\A', 'C'),
           ],
           'B' => [
@@ -73,7 +76,7 @@ class NamespaceDiscoveryTest extends TestCase {
       'lib' => [
         'A' => [
           'A' => [
-            'A.php' => $this->getClass('class', 'A\\A', 'A'),
+            'A.php' => $this->getClass('abstract class', 'A\\A', 'A'),
             'B.php' => $this->getClass('class', 'A\\A', 'C'),
           ],
           'B' => [

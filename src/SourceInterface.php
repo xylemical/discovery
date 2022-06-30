@@ -10,29 +10,6 @@ namespace Xylemical\Discovery;
 interface SourceInterface {
 
   /**
-   * The constant for discovery of classes.
-   */
-  public const TYPE_CLASS = 'class';
-
-  /**
-   * The constant for discovery of interfaces.
-   */
-  public const TYPE_INTERFACE = 'interface';
-
-  /**
-   * The constant for discovery of traits.
-   */
-  public const TYPE_TRAIT = 'trait';
-
-  /**
-   * Get the type.
-   *
-   * @return string
-   *   The type - one of the constants.
-   */
-  public function getType(): string;
-
-  /**
    * Get the name.
    *
    * @return string

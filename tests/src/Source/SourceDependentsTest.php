@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Xylemical\Discovery\Source;
 
 use PHPUnit\Framework\TestCase;
-use Xylemical\Discovery\Source;
-use Xylemical\Discovery\SourceInterface;
+use Xylemical\Discovery\ClassSource;
+use Xylemical\Discovery\InterfaceSource;
+use Xylemical\Discovery\TraitSource;
 use function array_keys;
 
 /**
@@ -19,29 +20,29 @@ class SourceDependentsTest extends TestCase {
    */
   public function testSanity(): void {
     $sources = [
-      'CA' => (new Source(SourceInterface::TYPE_CLASS, 'CA'))
+      'CA' => (new ClassSource('CA'))
         ->setClasses(['CD'])
         ->setInterfaces(['IA', 'IB'])
         ->setTraits(['TA', 'TB']),
-      'CB' => (new Source(SourceInterface::TYPE_CLASS, 'CB')),
-      'CC' => (new Source(SourceInterface::TYPE_CLASS, 'CC')),
-      'CD' => (new Source(SourceInterface::TYPE_CLASS, 'CD'))
+      'CB' => (new ClassSource('CB')),
+      'CC' => (new ClassSource('CC')),
+      'CD' => (new ClassSource('CD'))
         ->setClasses(['CB']),
-      'CE' => (new Source(SourceInterface::TYPE_CLASS, 'CE')),
-      'IA' => (new Source(SourceInterface::TYPE_INTERFACE, 'IA'))
+      'CE' => (new ClassSource('CE')),
+      'IA' => (new InterfaceSource('IA'))
         ->setInterfaces(['IC', 'ID']),
-      'IB' => (new Source(SourceInterface::TYPE_INTERFACE, 'IB')),
-      'IC' => (new Source(SourceInterface::TYPE_INTERFACE, 'IC')),
-      'ID' => (new Source(SourceInterface::TYPE_INTERFACE, 'ID'))
+      'IB' => (new InterfaceSource('IB')),
+      'IC' => (new InterfaceSource('IC')),
+      'ID' => (new InterfaceSource('ID'))
         ->setInterfaces(['IB']),
-      'IE' => (new Source(SourceInterface::TYPE_INTERFACE, 'IE')),
-      'TA' => (new Source(SourceInterface::TYPE_TRAIT, 'TA'))
+      'IE' => (new InterfaceSource('IE')),
+      'TA' => (new TraitSource('TA'))
         ->setTraits(['TC', 'TD']),
-      'TB' => (new Source(SourceInterface::TYPE_TRAIT, 'TB')),
-      'TC' => (new Source(SourceInterface::TYPE_TRAIT, 'TC')),
-      'TD' => (new Source(SourceInterface::TYPE_TRAIT, 'TD'))
+      'TB' => (new TraitSource('TB')),
+      'TC' => (new TraitSource('TC')),
+      'TD' => (new TraitSource('TD'))
         ->setTraits(['TB']),
-      'TE' => (new Source(SourceInterface::TYPE_TRAIT, 'TE')),
+      'TE' => (new TraitSource('TE')),
     ];
 
     $dependencies = new SourceDependents();

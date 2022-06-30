@@ -13,7 +13,11 @@ class SourceFactory implements SourceFactoryInterface {
    * {@inheritdoc}
    */
   public function create(string $type, string $name): SourceInterface {
-    return new Source($type, $name);
+    return match ($type) {
+      'interface' => new InterfaceSource($name),
+      'trait' => new TraitSource($name),
+      default => new ClassSource($name),
+    };
   }
 
 }

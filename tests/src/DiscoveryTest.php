@@ -23,20 +23,20 @@ class DiscoveryTest extends TestCase {
 
     $d1 = $this->prophesize(DiscoveryInterface::class);
     $d1->discover()->willReturn([
-      'A' => new Source(SourceInterface::TYPE_CLASS, 'A'),
+      'A' => new ClassSource('A'),
     ]);
     $discovery->addDiscovery($d1->reveal());
 
     $d2 = $this->prophesize(DiscoveryInterface::class);
     $d2->discover()->willReturn([
-      'A' => (new Source(SourceInterface::TYPE_INTERFACE, 'A')),
-      'B' => new Source(SourceInterface::TYPE_CLASS, 'B'),
+      'A' => (new InterfaceSource('A')),
+      'B' => new ClassSource('B'),
     ]);
     $discovery->addDiscovery($d2->reveal());
 
     $this->assertEquals([
-      'A' => new Source(SourceInterface::TYPE_CLASS, 'A'),
-      'B' => new Source(SourceInterface::TYPE_CLASS, 'B'),
+      'A' => new ClassSource('A'),
+      'B' => new ClassSource('B'),
     ], $discovery->discover());
   }
 

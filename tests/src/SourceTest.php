@@ -30,13 +30,13 @@ class SourceTest extends TestCase {
       [
         "class Test { public function test() { \$c = new class {}; } }",
         [
-          'Test' => (new Source(SourceInterface::TYPE_CLASS, 'Test')),
+          'Test' => (new ClassSource('Test')),
         ],
       ],
       [
         "use X\Test as DefaultTest; class Test extends DefaultTest implements Source, Code { use Dummy; }",
         [
-          'Test' => (new Source(SourceInterface::TYPE_CLASS, 'Test'))
+          'Test' => (new ClassSource('Test'))
             ->setClasses(['X\Test'])
             ->setInterfaces(['Source', 'Code'])
             ->setTraits(['Dummy']),
@@ -45,21 +45,21 @@ class SourceTest extends TestCase {
       [
         "namespace Foo; class Test { use \Foo; use \Bar; }",
         [
-          'Foo\Test' => (new Source(SourceInterface::TYPE_CLASS, 'Foo\Test'))
+          'Foo\Test' => (new ClassSource('Foo\Test'))
             ->setTraits(['Foo', 'Bar']),
         ],
       ],
       [
         "namespace Foo; interface Test extends \Source, \Code { }",
         [
-          'Foo\Test' => (new Source(SourceInterface::TYPE_INTERFACE, 'Foo\Test'))
+          'Foo\Test' => (new InterfaceSource('Foo\Test'))
             ->setInterfaces(['Source', 'Code']),
         ],
       ],
       [
         "namespace Foo; trait Test { use \Source; use \Code; }",
         [
-          'Foo\Test' => (new Source(SourceInterface::TYPE_TRAIT, 'Foo\Test'))
+          'Foo\Test' => (new TraitSource('Foo\Test'))
             ->setTraits(['Source', 'Code']),
         ],
       ],

@@ -9,19 +9,11 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use Xylemical\Discovery\Source\SourceVisitor;
-use function in_array;
 
 /**
  * Provides a generic source object.
  */
-class Source implements SourceInterface {
-
-  /**
-   * The type of the source object.
-   *
-   * @var string
-   */
-  protected string $type;
+abstract class Source implements SourceInterface {
 
   /**
    * The name of the source object.
@@ -54,21 +46,11 @@ class Source implements SourceInterface {
   /**
    * Source constructor.
    *
-   * @param string $type
-   *   The type.
    * @param string $name
    *   The name.
    */
-  public function __construct(string $type, string $name) {
-    $this->type = $type;
+  public function __construct(string $name) {
     $this->name = $name;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getType(): string {
-    return $this->type;
   }
 
   /**
@@ -89,7 +71,7 @@ class Source implements SourceInterface {
    * {@inheritdoc}
    */
   public function setClasses(array $classes): static {
-    if ($this->getType() === SourceInterface::TYPE_CLASS) {
+    if ($this instanceof ClassSourceInterface) {
       $this->classes = array_unique($classes);
     }
     return $this;
@@ -106,10 +88,7 @@ class Source implements SourceInterface {
    * {@inheritdoc}
    */
   public function setInterfaces(array $interfaces): static {
-    if (in_array($this->getType(), [
-      SourceInterface::TYPE_CLASS,
-      SourceInterface::TYPE_INTERFACE,
-    ])) {
+    if ($this instanceof ClassSourceInterface || $this instanceof InterfaceSourceInterface) {
       $this->interfaces = array_unique($interfaces);
     }
     return $this;
@@ -126,10 +105,7 @@ class Source implements SourceInterface {
    * {@inheritdoc}
    */
   public function setTraits(array $traits): static {
-    if (in_array($this->getType(), [
-      SourceInterface::TYPE_CLASS,
-      SourceInterface::TYPE_TRAIT,
-    ])) {
+    if ($this instanceof ClassSourceInterface || $this instanceof TraitSourceInterface) {
       $this->traits = array_unique($traits);
     }
     return $this;
