@@ -22,16 +22,19 @@ class SourceTest extends TestCase {
       [
         "",
         [],
+        NULL,
       ],
       [
         "{",
         [],
+        NULL,
       ],
       [
         "class Test { public function test() { \$c = new class {}; } }",
         [
           'Test' => (new ClassSource('Test')),
         ],
+        'class',
       ],
       [
         "use X\Test as DefaultTest; class Test extends DefaultTest implements Source, Code { use Dummy; }",
@@ -41,6 +44,7 @@ class SourceTest extends TestCase {
             ->setInterfaces(['Source', 'Code'])
             ->setTraits(['Dummy']),
         ],
+        'class',
       ],
       [
         "namespace Foo; class Test { use \Foo; use \Bar; }",
@@ -48,6 +52,7 @@ class SourceTest extends TestCase {
           'Foo\Test' => (new ClassSource('Foo\Test'))
             ->setTraits(['Foo', 'Bar']),
         ],
+        'class',
       ],
       [
         "namespace Foo; interface Test extends \Source, \Code { }",
@@ -55,6 +60,7 @@ class SourceTest extends TestCase {
           'Foo\Test' => (new InterfaceSource('Foo\Test'))
             ->setInterfaces(['Source', 'Code']),
         ],
+        'interface',
       ],
       [
         "namespace Foo; trait Test { use \Source; use \Code; }",
@@ -62,6 +68,7 @@ class SourceTest extends TestCase {
           'Foo\Test' => (new TraitSource('Foo\Test'))
             ->setTraits(['Source', 'Code']),
         ],
+        'trait',
       ],
     ];
   }
@@ -71,10 +78,13 @@ class SourceTest extends TestCase {
    *
    * @dataProvider providerTestParse
    */
-  public function testParse(string $contents, array $expected): void {
+  public function testParse(string $contents, array $expected, ?string $type): void {
     $factory = new SourceFactory();
     $result = Source::parse($factory, '<?' . "php\n $contents");
     $this->assertEquals($expected, $result);
+    if ($type) {
+      $this->assertEquals($type, reset($result)->getType());
+    }
   }
 
 }

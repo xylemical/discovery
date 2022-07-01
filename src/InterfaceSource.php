@@ -9,4 +9,11 @@ namespace Xylemical\Discovery;
  */
 class InterfaceSource extends Source implements InterfaceSourceInterface {
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getType(): string {
+    return 'interface';
+  }
+
 }

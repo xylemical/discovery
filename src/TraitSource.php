@@ -9,4 +9,11 @@ namespace Xylemical\Discovery;
  */
 class TraitSource extends Source implements TraitSourceInterface {
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getType(): string {
+    return 'trait';
+  }
+
 }

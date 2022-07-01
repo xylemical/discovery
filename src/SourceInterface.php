@@ -10,6 +10,14 @@ namespace Xylemical\Discovery;
 interface SourceInterface {
 
   /**
+   * Get the type used for the source.
+   *
+   * @return string
+   *   The type.
+   */
+  public function getType(): string;
+
+  /**
    * Get the name.
    *
    * @return string

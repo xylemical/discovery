@@ -56,6 +56,13 @@ abstract class Source implements SourceInterface {
   /**
    * {@inheritdoc}
    */
+  public function getType(): string {
+    return 'class';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getName(): string {
     return $this->name;
   }
